@@ -10,10 +10,10 @@ function ChatRoom() {
   const [socket, setSocket] = useState(null);
   const { user, room } = useParams();
 
-  useEffect(() => {}, []);
+  console.log({ user, room });
 
   useEffect(() => {
-    const newSocket = io(`http://${window.location.hostname}:8000`);
+    const newSocket = io(`/`);
     setSocket(newSocket);
 
     newSocket.emit("join", { user, room }, (error) => {
