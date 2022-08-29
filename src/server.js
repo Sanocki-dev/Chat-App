@@ -22,18 +22,10 @@ const io = socketio(server, {
 }); // Passes the server we created
 
 const port = process.env.PORT;
-// Have Node serve the files for our built React app
-app.use(express.static(path.resolve(__dirname, "../client/build")));
-
 app.use(express.json()); // Automatically parses incoming data to json
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(publicPath));
-  // All other GET requests not handled before will return our React app
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-  });
-}
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 io.on("connection", (socket) => {
   console.log("New WebSocket Connection!");
@@ -103,6 +95,10 @@ io.on("connection", (socket) => {
       });
     }
   });
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
 
 server.listen(port, () => {
