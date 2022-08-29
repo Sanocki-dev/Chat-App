@@ -82,7 +82,9 @@ function Messages({ socket }) {
   const onSubmitHandler = (e) => {
     e?.preventDefault();
     if (input.trim().length === 0) return;
-    socket.emit("sendMessage", input);
+    socket.emit("sendMessage", input, (message) => {
+      // console.log("The message was delivered!", message);
+    });
     setShowPicker(false);
     setInput("");
   };
