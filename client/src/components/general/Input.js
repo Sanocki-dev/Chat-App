@@ -22,7 +22,6 @@ const StyledInput = styled(InputBase)(({ theme }) => ({
         : theme.palette.background.input,
     border: theme.palette.mode === "light" && "1px solid #ced4da",
     fontSize: 16,
-    // width: "auto",
     padding: "10px 15px",
     transition: theme.transitions.create([
       "border-color",
@@ -55,6 +54,7 @@ const Input = (props) => {
         sx={{
           color: others.error && "error.light",
           fontWeight: "600",
+          pr:2,
           "&.Mui-focused": {
             color: others.error ? "error.main" : isDark ? "#fcfcfb" : "#202225",
           },

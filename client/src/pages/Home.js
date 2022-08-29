@@ -1,19 +1,19 @@
 import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import Input from "../components/general/Input";
 
 function Home() {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  console.log({ location });
   const [input, setInput] = useState({
     user: { value: "", isValid: true },
     room: { value: "", isValid: true },
   });
 
   const onChangeHandler = (e) => {
-    console.log(e);
     setInput((current) => ({
       ...current,
       [e.target.name]: { value: e.target.value, isValid: true },
@@ -22,7 +22,19 @@ function Home() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    navigate(`/room/${input.user.value}/${input.room.value}`);
+
+    const isValidName = input.user.value.trim().length !== 0;
+    const isRoomName = input.room.value.trim().length !== 0;
+
+    if (!isValidName || !isRoomName) {
+      setInput((current) => ({
+        user: { value: current.user.value, isValid: isValidName },
+        room: { value: current.room.value, isValid: isRoomName },
+      }));
+      return;
+    }
+
+    navigate(`/${input.room.value}/${input.user.value}`);
   };
 
   return (
@@ -39,8 +51,6 @@ function Home() {
       <Box
         component={Paper}
         sx={{
-          // width: 500,
-          // height: 500,
           display: "flex",
           alignItems: "center",
           flexDirection: "column",
@@ -56,11 +66,11 @@ function Home() {
         <Stack width="100%" gap={3}>
           <Input
             fullWidth
-            label="Username"
+            label="Display name"
             error={!input.user.isValid}
-            errorMessage={"Error here man oh man"}
+            errorMessage={"Invalid Username"}
             name="user"
-            placeholder="Username"
+            placeholder="Display name"
             value={input.user.value}
             onChange={onChangeHandler}
           />
@@ -69,10 +79,10 @@ function Home() {
             fullWidth
             error={!input.room.isValid}
             name="room"
-            placeholder="Server ID"
+            placeholder="Room"
             value={input.room.value}
+            errorMessage={"Invalid Room ID"}
             onChange={onChangeHandler}
-            helperText={"Enter a username"}
           />
           <Button variant="contained" type="submit" fullWidth>
             Join

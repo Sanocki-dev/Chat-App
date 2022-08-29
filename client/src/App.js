@@ -38,7 +38,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="" element={<Home />} />
-          <Route path="/room/:user/:room" element={<ChatRoom />} />
+          <Route path="/:room/:user" element={<ChatRoom />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

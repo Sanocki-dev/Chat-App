@@ -36,14 +36,13 @@ function Messages({ socket }) {
 
   useEffect(() => {
     const messageListener = (message) => {
-      setMessages((current) => [...current, message]);
+      setMessages((current) => [...current, { ...message }]);
       // scroll.current.scrollIntoView({ behavior: "smooth" });
     };
 
     const updateRoom = (data) => {
       setRoomData(data);
     };
-
     socket.on("message", messageListener);
     socket.on("roomData", updateRoom);
 
@@ -51,6 +50,7 @@ function Messages({ socket }) {
       socket.off("message", messageListener);
     };
   }, [socket]);
+  console.log(messages);
 
   useEffect(() => {
     // Makes sure there it is possible to scroll
@@ -152,12 +152,14 @@ function Messages({ socket }) {
           </Typography>
         </Box>
         <Box py={2} px={3}>
-          <Typography variant="subtitle2" color="white" mb={3}>
-            Currently In Chat
-          </Typography>
-
-          {roomData?.users.map(({ user }, index) => (
-            <Box pt={1} color="white" key={index}>
+          {roomData?.users.map(({ user, id }, index) => (
+            <Box pt={1} color="white" key={index} display='flex' alignItems='center'>
+              <Box
+                component="img"
+                sx={{ height: 30, mr: 2 }}
+                src={`https://avatars.dicebear.com/api/bottts/${id}.svg`}
+                alt="avatar"
+              />
               <Typography color="primary.main">{user}</Typography>
             </Box>
           ))}
@@ -180,10 +182,10 @@ function Messages({ socket }) {
             flex: 1,
             boxSizing: "border-box",
             overflowY: "scroll",
-            scrollBehavior:'smooth'
+            scrollBehavior: "smooth",
           }}
         >
-          {messages?.map(({ user, text, createdAt, link }, index) => (
+          {messages?.map(({ id, user, text, createdAt, link }, index) => (
             <Fragment key={index}>
               <Box
                 sx={{
@@ -193,63 +195,71 @@ function Messages({ socket }) {
                   minWidth: 200,
                 }}
               >
-                <Stack color="white">
-                  <Box display="flex" alignItems="baseline">
-                    <Typography
-                      mr={1.5}
-                      color="primary.main"
-                      variant="subtitle1"
-                      fontWeight="400"
+                <Stack color="white" direction={"row"}>
+                  <Box
+                    component="img"
+                    sx={{ height: 30, mr: 2 }}
+                    src={`https://avatars.dicebear.com/api/bottts/${id}.svg`}
+                    alt="avatar"
+                  />
+                  <Stack>
+                    <Box display="flex" alignItems="baseline">
+                      <Typography
+                        mr={1.5}
+                        color="primary.main"
+                        variant="subtitle1"
+                        fontWeight="400"
+                      >
+                        {user}
+                      </Typography>
+                      <Typography variant="caption" color={grey[500]}>
+                        {timeFormat(createdAt)}
+                      </Typography>
+                    </Box>
+                    {link ? (
+                      <Link
+                        href={link}
+                        underline="hover"
+                        color="white"
+                        target="_blank"
+                      >
+                        {text}
+                      </Link>
+                    ) : (
+                      <Typography sx={{ wordBreak: "break-word" }}>
+                        {text}
+                      </Typography>
+                    )}
+                    <Snackbar
+                      open={scrollAlert}
+                      autoHideDuration={5000}
+                      onClose={() => setScrollAlert(false)}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center",
+                      }}
+                      sx={{ bottom: "80px !important" }}
                     >
-                      {user}
-                    </Typography>
-                    <Typography variant="caption" color={grey[500]}>
-                      {timeFormat(createdAt)}
-                    </Typography>
-                  </Box>
-                  {link ? (
-                    <Link
-                      href={link}
-                      underline="hover"
-                      color="white"
-                      target="_blank"
-                    >
-                      {text}
-                    </Link>
-                  ) : (
-                    <Typography sx={{ wordBreak: "break-word" }}>
-                      {text}
-                    </Typography>
-                  )}
-                  <Snackbar
-                    open={scrollAlert}
-                    autoHideDuration={5000}
-                    onClose={() => setScrollAlert(false)}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center",
-                    }}
-                    sx={{ bottom: "80px !important" }}
-                  >
-                    <Alert
-                      icon={false}
-                      sx={{ bgcolor: "background.darkest" }}
-                      action={
-                        <Button
-                          onClick={() => {
-                            scrollToBottom();
-                            setScrollAlert(false);
-                          }}
-                          color="inherit"
-                          size="small"
-                        >
-                          View
-                        </Button>
-                      }
-                    >
-                      You have a new message!
-                    </Alert>
-                  </Snackbar>
+                      <Alert
+                        icon={false}
+                        sx={{ bgcolor: "background.darkest" }}
+                        action={
+                          <Button
+                            onClick={() => {
+                              scrollToBottom();
+                              setScrollAlert(false);
+                            }}
+                            color="inherit"
+                            size="small"
+                          >
+                            View
+                          </Button>
+                        }
+                      >
+                        You have a new message!
+                      </Alert>
+                    </Snackbar>
+                  </Stack>
                 </Stack>
               </Box>
             </Fragment>

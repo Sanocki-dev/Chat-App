@@ -39,11 +39,18 @@ io.on("connection", (socket) => {
     socket.join(newUser.room);
     socket.emit(
       "message",
-      generateMessage(newUser.user + " has joined the chat!")
+      generateMessage({
+        id: newUser.id,
+        user: newUser.user + " has joined the chat!",
+      })
     );
-    socket.broadcast
-      .to(room)
-      .emit("message", generateMessage(newUser.user + " has joined the chat!")); // sends to everyone but the one that called it
+    socket.broadcast.to(room).emit(
+      "message",
+      generateMessage({
+        id: newUser.id,
+        user: newUser.user + " has joined the chat!",
+      })
+    ); // sends to everyone but the one that called it
 
     io.to(newUser.room).emit("roomData", {
       room: newUser.room,
@@ -53,15 +60,22 @@ io.on("connection", (socket) => {
     callback();
   });
 
-  socket.on("sendMessage", (message, callback) => {
-    const { room, user } = getUser(socket.id);
+  socket.on("sendMessage", (text, callback) => {
+    const { room, user, id } = getUser(socket.id);
 
-    if (message.toLowerCase().includes("lebatts")) {
+    if (text.toLowerCase().includes("lebatts")) {
       io.to(room).emit("message", message.replace("lebatts", "ceaser"));
       return callback("Dont say that!");
     }
 
-    io.to(room).emit("message", generateMessage(user, message));
+    io.to(room).emit(
+      "message",
+      generateMessage({
+        id,
+        user,
+        text,
+      })
+    );
     callback("Delivered!");
   });
 
@@ -71,11 +85,12 @@ io.on("connection", (socket) => {
     let res = await geocode(location);
     io.to(room).emit(
       "message",
-      generateMessage(
+      generateMessage({
+        id: user.id,
         user,
-        res.name,
-        `https://www.google.com/maps/place/${location}`
-      )
+        text: res.name,
+        link: `https://www.google.com/maps/place/${location}`,
+      })
     );
     callback("Location Shared!");
   });
@@ -86,7 +101,10 @@ io.on("connection", (socket) => {
     if (user) {
       io.to(user.room).emit(
         "message",
-        generateMessage(user.user + " has left the chat!")
+        generateMessage({
+          id: user.id,
+          user: user.user + " has left the chat!",
+        })
       );
 
       io.to(user.room).emit("roomData", {
@@ -97,14 +115,11 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get("/hello", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-});
+app.get("/clear", (req, res) => {});
 
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
-
 
 server.listen(port, () => {
   console.log("Server is running on port " + port);

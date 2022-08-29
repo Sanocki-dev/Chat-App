@@ -1,5 +1,6 @@
-const generateMessage = (user, text, link = undefined) => {
+const generateMessage = ({ id, user, text, link = undefined }) => {
   return {
+    id,
     user,
     text,
     createdAt: new Date().getTime(),

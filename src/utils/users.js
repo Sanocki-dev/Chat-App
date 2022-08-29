@@ -1,3 +1,6 @@
+const { default: axios } = require("axios");
+const { request } = require("express");
+
 const users = [];
 
 // Adds user to a room
@@ -14,16 +17,16 @@ const addUser = ({ id, user, room }) => {
   }
 
   // Check for existing user in a room
-  const existingUser = users.find(
-    (find) => find.room === room && find.user === user
-  );
+  // const existingUser = users.find(
+  //   (find) => find.room === room && find.user === user
+  // );
 
-  // Validate username
-  if (existingUser) {
-    return {
-      error: "Username already taken!",
-    };
-  }
+  // // Validate username
+  // if (existingUser) {
+  //   return {
+  //     error: "Username already taken!",
+  //   };
+  // }
 
   // Stores the user
   const newUser = { id, user, room };
