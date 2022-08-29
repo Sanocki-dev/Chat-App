@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node src/app.js",
+    "start": "node src/server.js",
     "build": "cd client && npm install && npm run build",
     "dev": "env-cmd nodemon src/server.js"
   },
