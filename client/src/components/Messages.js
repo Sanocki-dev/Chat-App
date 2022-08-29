@@ -37,7 +37,6 @@ function Messages({ socket }) {
   useEffect(() => {
     const messageListener = (message) => {
       setMessages((current) => [...current, { ...message }]);
-      // scroll.current.scrollIntoView({ behavior: "smooth" });
     };
 
     const updateRoom = (data) => {
@@ -50,12 +49,10 @@ function Messages({ socket }) {
       socket.off("message", messageListener);
     };
   }, [socket]);
-  console.log(messages);
 
   useEffect(() => {
     // Makes sure there it is possible to scroll
     if (!(scroll.current.scrollHeight > scroll.current.clientHeight)) return;
-    console.log("first");
     const newMessage = scroll.current.lastElementChild;
     const bottom =
       scroll.current.scrollHeight -
@@ -84,9 +81,8 @@ function Messages({ socket }) {
 
   const onSubmitHandler = (e) => {
     e?.preventDefault();
-    socket.emit("sendMessage", input, (message) => {
-      // console.log("The message was delivered!", message);
-    });
+    if (input.trim().length === 0) return;
+    socket.emit("sendMessage", input);
     setShowPicker(false);
     setInput("");
   };
@@ -153,7 +149,13 @@ function Messages({ socket }) {
         </Box>
         <Box py={2} px={3}>
           {roomData?.users.map(({ user, id }, index) => (
-            <Box pt={1} color="white" key={index} display='flex' alignItems='center'>
+            <Box
+              pt={1}
+              color="white"
+              key={index}
+              display="flex"
+              alignItems="center"
+            >
               <Box
                 component="img"
                 sx={{ height: 30, mr: 2 }}
