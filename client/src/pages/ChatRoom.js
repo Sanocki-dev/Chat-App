@@ -9,9 +9,7 @@ import { useParams } from "react-router-dom";
 function ChatRoom() {
   const [socket, setSocket] = useState(null);
   const { user, room } = useParams();
-
-  console.log({ user, room });
-
+  
   useEffect(() => {
     const newSocket = io(`/`);
     setSocket(newSocket);
