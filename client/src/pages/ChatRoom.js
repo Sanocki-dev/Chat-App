@@ -1,29 +1,85 @@
 import React, { useEffect, useState } from "react";
-import io from "socket.io-client";
-import { useNavigate, useParams } from "react-router-dom";
+import { Box, IconButton, Snackbar, Stack } from "@mui/material";
+import SideBar from "../components/SideBar";
+import MessageArea from "../components/MessageArea";
+import MessageInput from "../components/MessageInput";
+import { Close } from "@mui/icons-material";
 
-import Messages from "../components/Messages";
-import Loading from "../components/Loading";
-
-function ChatRoom() {
-  const [socket, setSocket] = useState(null);
-  const { user, room } = useParams();
-  const navigate = useNavigate();
+const ChatRoom = ({ socket }) => {
+  const [messages, setMessages] = useState([]);
+  const [roomData, setRoomData] = useState(null);
+  const [alert, setAlert] = useState(false);
 
   useEffect(() => {
-    const url = process.env.NODE_ENV === 'development' ? `http://${window.location.hostname}:8000` : '/'
-    const newSocket = io(url);
-    setSocket(newSocket);
+    const messageListener = (message) => {
+      setMessages((current) => [...current, { ...message }]);
+    };
 
-    // Tries to connect to the room using the room and username
-    newSocket.emit("join", { user, room }, (error) => {
-      if (error) navigate("/", { state: error });
-    });
+    const updateRoom = (data) => {
+      setRoomData(data);
+    };
 
-    return () => newSocket.close();
-  }, [navigate, room, setSocket, user]);
+    socket.on("message", messageListener);
+    socket.on("roomData", updateRoom);
 
-  return socket ? <Messages socket={socket} /> : <Loading size={155} />;
-}
+    return () => {
+      socket.off("message", messageListener);
+    };
+  }, [socket]);
+
+  const shareLocationHandler = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const coords = `${latitude},${longitude}`;
+
+        socket.emit("shareLocation", coords, (message) => {
+          console.log(message);
+        });
+      },
+      () => {
+        return setAlert(true);
+      }
+    );
+  };
+
+  return (
+    <Stack
+      direction="row"
+      height="100vh"
+      boxSizing="border-box"
+      overflow="hidden"
+      pl={3}
+      pt={3}
+      bgcolor="background.darkest"
+    >
+      <SideBar data={roomData} id={socket.id} />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "85%",
+          bgcolor: "background.main",
+          py: 3,
+          px: 3,
+        }}
+      >
+        <MessageArea messages={messages} />
+        <MessageInput socket={socket} shareLocation={shareLocationHandler} />
+      </Box>
+      <Snackbar
+        open={alert}
+        message="Unable to share your location."
+        autoHideDuration={5000}
+        onClose={() => setAlert(false)}
+        action={
+          <IconButton onClick={() => setAlert(false)}>
+            <Close />
+          </IconButton>
+        }
+      />
+    </Stack>
+  );
+};
 
 export default ChatRoom;

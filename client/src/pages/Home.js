@@ -1,11 +1,13 @@
 import { Box, Button, Paper, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Input from "../components/general/Input";
+import UserContext from "../store/userContext";
 
 function Home() {
   const navigate = useNavigate();
+  const { updateUsername } = useContext(UserContext);
 
   const [input, setInput] = useState({
     user: { value: "", isValid: true },
@@ -32,8 +34,8 @@ function Home() {
       }));
       return;
     }
-
-    navigate(`/${input.room.value}/${input.user.value}`);
+    updateUsername(input.user.value);
+    navigate(`/${input.room.value}`, { user: "Mike" });
   };
 
   return (

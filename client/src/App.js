@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-
-import Home from "./pages/Home";
-import ChatRoom from "./pages/ChatRoom";
 import { blue, indigo } from "@mui/material/colors";
 import { IconButton } from "@mui/material";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
+
+import Home from "./pages/Home";
+import JoinRoom from "./pages/JoinRoom";
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
@@ -38,7 +38,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="" element={<Home />} />
-          <Route path="/:room/:user" element={<ChatRoom />} />
+          <Route path="/:room" element={<JoinRoom />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
