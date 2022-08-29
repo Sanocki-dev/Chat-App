@@ -1,13 +1,12 @@
 import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Input from "../components/general/Input";
 
 function Home() {
   const navigate = useNavigate();
-  const location = useLocation();
-  console.log({ location });
+
   const [input, setInput] = useState({
     user: { value: "", isValid: true },
     room: { value: "", isValid: true },

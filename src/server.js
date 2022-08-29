@@ -61,8 +61,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", (text, callback) => {
-    const { room, user, id } = getUser(socket.id);
-
+    const data = getUser(socket.id);
+    
+    if (!data) {
+      return;
+    }
+    const { user, id, room } = data;
+    
     if (text.toLowerCase().includes("lebatts")) {
       io.to(room).emit("message", message.replace("lebatts", "ceaser"));
       return callback("Dont say that!");
@@ -80,13 +85,18 @@ io.on("connection", (socket) => {
   });
 
   socket.on("shareLocation", async (location, callback) => {
-    const { room, user } = getUser(socket.id);
+    const data = getUser(socket.id);
+    if (!data) {
+      return;
+    }
 
-    let res = await geocode(location);
+    const { user, id, room } = data;
+    const res = await geocode(location);
+
     io.to(room).emit(
       "message",
       generateMessage({
-        id: user.id,
+        id,
         user,
         text: res.name,
         link: `https://www.google.com/maps/place/${location}`,

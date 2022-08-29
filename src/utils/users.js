@@ -43,6 +43,8 @@ const removeUser = (id) => {
 };
 
 const getUser = (id) => users.find((find) => find.id === id);
+// const getUser = (id) => users;
+
 
 const getUsersInRoom = (room) => users.filter((find) => find.room === room);
 

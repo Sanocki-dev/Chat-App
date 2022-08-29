@@ -49,7 +49,7 @@ function Messages({ socket }) {
       socket.off("message", messageListener);
     };
   }, [socket]);
-
+console.log(messages)
   useEffect(() => {
     // Makes sure there it is possible to scroll
     if (!(scroll.current.scrollHeight > scroll.current.clientHeight)) return;
@@ -96,7 +96,7 @@ function Messages({ socket }) {
         const coords = `${latitude},${longitude}`;
 
         socket.emit("shareLocation", coords, (message) => {
-          // console.log(message);
+          console.log(message);
         });
       },
       () => {
