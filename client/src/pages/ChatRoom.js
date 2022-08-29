@@ -11,7 +11,7 @@ function ChatRoom() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const newSocket = io(`http://${window.location.hostname}:8000`);
+    const newSocket = io(`/`);
     setSocket(newSocket);
 
     // Tries to connect to the room using the room and username
