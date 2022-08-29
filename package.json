@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node src/app.js",
+    "build": "cd client && npm install && npm run build",
     "dev": "env-cmd nodemon src/server.js"
   },
   "author": "",
