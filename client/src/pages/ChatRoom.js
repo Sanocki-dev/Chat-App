@@ -15,7 +15,7 @@ const ChatRoom = () => {
   const [alert, setAlert] = useState(false);
 
   useEffect(() => {
-    console.log('object');
+    console.log("object");
     if (!socket) return;
 
     const messageListener = (message) => {

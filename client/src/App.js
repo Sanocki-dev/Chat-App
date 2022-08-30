@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import {
-  amber,
-  blue,
-  deepOrange,
-  green,
-  grey,
-  indigo,
-  red,
-} from "@mui/material/colors";
+import { blue, grey, red } from "@mui/material/colors";
 import { IconButton } from "@mui/material";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
 

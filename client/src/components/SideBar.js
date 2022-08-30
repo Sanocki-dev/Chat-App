@@ -4,7 +4,7 @@ import Avatar from "./general/Avatar";
 import UserDetail from "./UserDetail";
 
 function SideBar({ data, id }) {
-  const [edit, setEdit] = useState(true);
+  const [edit, setEdit] = useState(false);
   const padding = { px: 3, py: 2 };
 
   const onUserClick = (clicked) => {
@@ -12,6 +12,7 @@ function SideBar({ data, id }) {
     if (id !== clicked) return;
     setEdit(true);
   };
+
   return (
     <Box
       sx={{
