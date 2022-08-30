@@ -20,10 +20,11 @@ function EmojiPicker({ open, onSelect, onClose }) {
     <AnimatedBox
       style={{ ...animatedProps }}
       sx={{
+        bgcolor:'background.darkest',
         zIndex: 100,
         position: "absolute",
         left: "10%",
-        bgcolor: "#151617",
+        // bgcolor: "#151617",
         p: 1,
         pt: 6,
         borderRadius: 2,

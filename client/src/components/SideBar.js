@@ -22,7 +22,12 @@ function SideBar({ data, id }) {
         borderTopLeftRadius: 12,
       }}
     >
-      <UserDetail user={data?.users.find((user) => user.id === id)} />
+      {edit && (
+        <UserDetail
+          onClose={() => setEdit(false)}
+          user={data?.users.find((user) => user.id === id)}
+        />
+      )}
 
       {/* Display the room name */}
       <Box

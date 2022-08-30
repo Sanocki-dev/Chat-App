@@ -9,6 +9,7 @@ const {
   addUser,
   getUsersInRoom,
   removeUser,
+  updateUser,
   getUser,
 } = require("./utils/users");
 
@@ -62,12 +63,12 @@ io.on("connection", (socket) => {
 
   socket.on("sendMessage", (text, callback) => {
     const data = getUser(socket.id);
-    
+
     if (!data) {
       return;
     }
     const { user, id, room } = data;
-    
+
     if (text.toLowerCase().includes("lebatts")) {
       io.to(room).emit("message", message.replace("lebatts", "ceaser"));
       return callback("Dont say that!");
@@ -82,6 +83,27 @@ io.on("connection", (socket) => {
       })
     );
     callback("Delivered!");
+  });
+
+  socket.on("updateUsername", async (username) => {
+    const { id, user, room } = getUser(socket.id);
+    const updated = updateUser(id, username);
+
+    if (!updated) {
+      return;
+    }
+
+    io.to(room).emit(
+      "message",
+      generateMessage({
+        id,
+        user: `${user} has updated their name to ${updated}`,
+      })
+    );
+    io.to(room).emit("roomData", {
+      room: room,
+      users: getUsersInRoom(room),
+    });
   });
 
   socket.on("shareLocation", async (location, callback) => {

@@ -4,7 +4,7 @@ import CircularProgress, {
   circularProgressClasses,
 } from "@mui/material/CircularProgress";
 
-function loading({ size }) {
+function Loading({ size }) {
   return (
     <Box
       sx={{
@@ -50,4 +50,4 @@ function loading({ size }) {
   );
 }
 
-export default loading;
+export default Loading;

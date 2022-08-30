@@ -12,8 +12,8 @@ import {
 const StyledInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
     marginTop: theme.spacing(2.5),
-  },
-  "& .MuiInputBase-input": {
+  // },
+  // "& .MuiInputBase-input": {
     borderRadius: 6,
     position: "relative",
     backgroundColor:

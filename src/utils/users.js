@@ -34,6 +34,13 @@ const addUser = ({ id, user, room }) => {
   return { newUser };
 };
 
+const updateUser = (id, username) => {
+  const index = users.findIndex((find) => find.id === id);
+  if (index !== -1) {
+    return users[index].user = username;
+  }
+};
+
 const removeUser = (id) => {
   const index = users.findIndex((find) => find.id === id);
 
@@ -45,7 +52,6 @@ const removeUser = (id) => {
 const getUser = (id) => users.find((find) => find.id === id);
 // const getUser = (id) => users;
 
-
 const getUsersInRoom = (room) => users.filter((find) => find.room === room);
 
 module.exports = {
@@ -53,4 +59,5 @@ module.exports = {
   removeUser,
   getUser,
   getUsersInRoom,
+  updateUser,
 };

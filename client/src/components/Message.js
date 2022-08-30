@@ -14,7 +14,7 @@ function Message({ id, user, createdAt, link, text }) {
         minHeight: 50,
       }}
     >
-      <Stack color="white" direction={"row"}>
+      <Stack color="text.primary" direction={"row"}>
         <Avatar id={id} />
         <Stack sx={{ ml: 2 }}>
           <Box display="flex" alignItems="baseline">
@@ -31,7 +31,7 @@ function Message({ id, user, createdAt, link, text }) {
             </Typography>
           </Box>
           {link ? (
-            <Link href={link} underline="hover" color="white" target="_blank">
+            <Link href={link} underline="hover" color="text.link" target="_blank">
               {text}
             </Link>
           ) : (

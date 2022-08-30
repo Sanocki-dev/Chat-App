@@ -7,7 +7,7 @@ import UserContext from "../store/userContext";
 
 function Home() {
   const navigate = useNavigate();
-  const { updateUsername } = useContext(UserContext);
+  const { createConnection } = useContext(UserContext);
 
   const [input, setInput] = useState({
     user: { value: "", isValid: true },
@@ -34,8 +34,11 @@ function Home() {
       }));
       return;
     }
-    updateUsername(input.user.value);
-    navigate(`/${input.room.value}`, { user: "Mike" });
+    
+    const error = createConnection(input.user.value, input.room.value);
+    if (!error) {
+      navigate(`/${input.room.value}`);
+    }
   };
 
   return (
@@ -63,7 +66,6 @@ function Home() {
         <Typography variant="h4" mb={3} fontWeight="bolder">
           Join a room
         </Typography>
-
         <Stack width="100%" gap={3}>
           <Input
             fullWidth
