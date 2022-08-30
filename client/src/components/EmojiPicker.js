@@ -24,7 +24,7 @@ function EmojiPicker({ open, onSelect, onClose }) {
         bgcolor: "background.darkest",
         zIndex: 100,
         position: "absolute",
-        left: mdBP ? '2%': '10%',
+        left: mdBP ? 0: '10%',
         // bgcolor: "#151617",
         p: 1,
         pt: 6,
