@@ -2,11 +2,12 @@ import React from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { Close } from "@mui/icons-material";
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, useMediaQuery } from "@mui/material";
 import { useSpring, animated } from "react-spring";
 
 function EmojiPicker({ open, onSelect, onClose }) {
   const AnimatedBox = animated(Box);
+  const mdBP = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   const animatedProps = useSpring({
     opacity: open ? 1 : 0,
@@ -20,10 +21,10 @@ function EmojiPicker({ open, onSelect, onClose }) {
     <AnimatedBox
       style={{ ...animatedProps }}
       sx={{
-        bgcolor:'background.darkest',
+        bgcolor: "background.darkest",
         zIndex: 100,
         position: "absolute",
-        left: "10%",
+        left: mdBP ? '2%': '10%',
         // bgcolor: "#151617",
         p: 1,
         pt: 6,

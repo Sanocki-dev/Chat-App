@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, IconButton, Snackbar, Stack } from "@mui/material";
+import { Box, IconButton, Snackbar, Stack, useMediaQuery } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
 import SideBar from "../components/SideBar";
@@ -13,9 +13,10 @@ const ChatRoom = () => {
   const [messages, setMessages] = useState([]);
   const [roomData, setRoomData] = useState(null);
   const [alert, setAlert] = useState(false);
+  const smBP = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const mdBP = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   useEffect(() => {
-    console.log("object");
     if (!socket) return;
 
     const messageListener = (message) => {
@@ -52,20 +53,25 @@ const ChatRoom = () => {
 
   return (
     <Stack
-      direction="row"
+      direction={mdBP ? "column" : "row"}
       height="100vh"
+      width="100%"
       boxSizing="border-box"
       overflow="hidden"
-      pl={3}
-      pt={3}
+      pl={mdBP ? 0 : 3}
+      pt={mdBP ? 0 : 3}
       bgcolor="background.darkest"
     >
-      <SideBar data={roomData} id={socket.id} />
+      <SideBar fullWidth={mdBP} data={roomData} id={socket.id} />
       <Box
         sx={{
           display: "flex",
+          flex:1,
           flexDirection: "column",
-          width: "85%",
+          boxSizing: "border-box",
+          overflow: "hidden",
+          // flexGrow:1,
+          width: "100%",
           bgcolor: "background.main",
           py: 3,
           px: 3,

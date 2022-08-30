@@ -51,29 +51,6 @@ const getTheme = (mode) => ({
             link: blue[900],
           },
         }),
-    // primary: {
-    //   ...amber,
-    //   ...(mode === "dark" && {
-    //     main: amber[300],
-    //   }),
-    // },
-    // ...(mode === "dark" && {
-    //   background: {
-    //     default: deepOrange[900],
-    //     paper: deepOrange[900],
-    //   },
-    // }),
-    // text: {
-    //   ...(mode === "light"
-    //     ? {
-    //         primary: grey[900],
-    //         secondary: grey[800],
-    //       }
-    //     : {
-    //         primary: "#fff",
-    //         secondary: grey[500],
-    //       }),
-    // },
   },
 });
 
@@ -82,22 +59,6 @@ function App() {
   const darkModeTheme = createTheme(getTheme(darkMode ? "dark" : "light"));
 
   const darkTheme = createTheme(darkModeTheme);
-  //   {
-  //   palette: {
-  //     mode: darkMode ? "dark" : "light",
-  //     primary: {
-  //       main: blue[500],
-  //       dark: indigo[900],
-  //     },
-  //     background: {
-  //       main: "#36393f",
-  //       secondary: "#2f3136",
-  //       dark: "#292b2f",
-  //       darkest: "#202225",
-  //       input: "#40444b",
-  //     },
-  //   },
-  // }
 
   return (
     <ThemeProvider theme={darkTheme}>

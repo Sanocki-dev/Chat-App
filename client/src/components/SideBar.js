@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Button, Collapse, Paper, Typography } from "@mui/material";
 import Avatar from "./general/Avatar";
 import UserDetail from "./UserDetail";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
-function SideBar({ data, id }) {
+function SideBar({ fullWidth, data, id }) {
   const [edit, setEdit] = useState(false);
+  const [open, setOpen] = useState(!fullWidth);
   const padding = { px: 3, py: 2 };
 
   const onUserClick = (clicked) => {
@@ -16,7 +18,7 @@ function SideBar({ data, id }) {
   return (
     <Box
       sx={{
-        width: "15%",
+        width: fullWidth ? "100%" : "15%",
         minWidth: 200,
         bgcolor: "background.secondary",
         overflow: "hidden",
@@ -44,30 +46,37 @@ function SideBar({ data, id }) {
       </Box>
 
       {/* Map the users in the room */}
-      {data?.users.map(({ user, id }, index) => (
-        <Box
-          key={index}
-          sx={{
-            mt: 1.5,
-            px: 3,
-            mx: 1,
-            borderRadius: 2,
-            py: 1,
-            display: "flex",
-            alignItems: "center",
-            cursor: "pointer",
-            "&:hover": {
-              bgcolor: "background.darkest",
-            },
-          }}
-          onClick={() => onUserClick(id)}
-        >
-          <Avatar id={id} />
-          <Typography ml={2} color="primary.main">
-            {user}
-          </Typography>
-        </Box>
-      ))}
+      {fullWidth && (
+        <Button fullWidth onClick={() => setOpen((a) => !a)}>
+          Show Chat List{open ? <ExpandLess /> : <ExpandMore />}
+        </Button>
+      )}
+      <Collapse in={open}>
+        {data?.users.map(({ user, id }, index) => (
+          <Box
+            key={index}
+            sx={{
+              mt: 1.5,
+              px: 3,
+              mx: 1,
+              borderRadius: 2,
+              py: 1,
+              display: "flex",
+              alignItems: "center",
+              cursor: "pointer",
+              "&:hover": {
+                bgcolor: "background.darkest",
+              },
+            }}
+            onClick={() => onUserClick(id)}
+          >
+            <Avatar id={id} />
+            <Typography ml={2} color="primary.main">
+              {user}
+            </Typography>
+          </Box>
+        ))}
+      </Collapse>
     </Box>
   );
 }

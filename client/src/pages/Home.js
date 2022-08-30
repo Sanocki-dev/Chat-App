@@ -34,7 +34,6 @@ function Home() {
       }));
       return;
     }
-    
     const error = createConnection(input.user.value, input.room.value);
     if (!error) {
       navigate(`/${input.room.value}`);
