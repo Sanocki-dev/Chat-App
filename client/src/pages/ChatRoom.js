@@ -13,7 +13,6 @@ const ChatRoom = () => {
   const [messages, setMessages] = useState([]);
   const [roomData, setRoomData] = useState(null);
   const [alert, setAlert] = useState(false);
-  const smBP = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const mdBP = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   useEffect(() => {
