@@ -25,11 +25,13 @@ const io = socketio(server, {
 }); // Passes the server we created
 
 const port = process.env.PORT || 8000;
-console.log(process.env);
+
 app.use(express.json()); // Automatically parses incoming data to json
 
 // Have Node serve the files for our built React app
 app.use(express.static(path.resolve(__dirname, "../client/build")));
+
+io.set('transports',['websocket']);
 
 io.on("connection", (socket) => {
   console.log("New WebSocket Connection!");

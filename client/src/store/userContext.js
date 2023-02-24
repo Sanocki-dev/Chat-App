@@ -21,8 +21,8 @@ export const UserContextProvider = (props) => {
       process.env.NODE_ENV === "development"
         ? `http://${window.location.hostname}:8000`
         : "/";
-    console.log(url);
-    const newSocket = io(url);
+
+    const newSocket = io(url, { transports: ["websocket"], upgrade: false });
     setSocket(newSocket);
     setUsername(user);
 
