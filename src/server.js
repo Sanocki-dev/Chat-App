@@ -2,6 +2,7 @@ const path = require("path");
 const express = require("express");
 const http = require("http");
 const socketio = require("socket.io");
+const dotenv = require("dotenv");
 
 const geocode = require("./utils/geocode");
 const { generateMessage } = require("./utils/messages");
@@ -13,6 +14,7 @@ const {
   getUser,
 } = require("./utils/users");
 
+dotenv.config();
 const app = express();
 const server = http.createServer(app); // Created the server ourselves to be able to set up the io
 const io = socketio(server, {
@@ -22,7 +24,8 @@ const io = socketio(server, {
   },
 }); // Passes the server we created
 
-const port = process.env.PORT;
+const port = process.env.PORT || 8000;
+console.log(process.env);
 app.use(express.json()); // Automatically parses incoming data to json
 
 // Have Node serve the files for our built React app
